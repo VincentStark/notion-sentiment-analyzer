@@ -1,0 +1,8 @@
+matplotlib
+nltk
+notion-client
+numpy
+openai
+python-dotenv
+redis
+tqdm
