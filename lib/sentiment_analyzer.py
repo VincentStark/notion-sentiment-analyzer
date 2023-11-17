@@ -8,12 +8,13 @@ import os
 
 
 class SentimentAnalyzer:
-
     def __init__(self, analyzer_type="nltk"):
         redis_host = os.getenv("REDIS_HOST", "localhost")
         redis_port = os.getenv("REDIS_PORT", 6379)
         redis_password = os.getenv("REDIS_PASSWORD", None)
-        self.redis_client = redis.Redis(host=redis_host, port=redis_port, password=redis_password, db=0)
+        self.redis_client = redis.Redis(
+            host=redis_host, port=redis_port, password=redis_password, db=0
+        )
 
         self.analyzer_type = analyzer_type
         if self.analyzer_type == "nltk":
@@ -55,11 +56,16 @@ class SentimentAnalyzer:
                 },
                 {
                     "role": "user",
-                    "content": f"What's the author's happiness score of the text? Put it to 'score' field that as a float value from -1.0 (very unhappy) to 1.0 (very happy). Text: {text}",
+                    "content": f"""
+                        What's the author's happiness score of the text? 
+                        Put it to 'score' field that as a float value from -1.0 (very unhappy) to 1.0 (very happy). 
+                        If you can't assess score, still add 'score' field but make it an empty string. 
+                        Text: {text}
+                    """,
                 },
             ],
         )
-        
+
         score = json.loads(response.choices[0].message.content)["score"]
         self.redis_client.set(text_hash, json.dumps(score))
 
