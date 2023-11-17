@@ -16,9 +16,13 @@ class DiagramCreator:
 
         heatmap_data = defaultdict(lambda: np.full((len(DAYS), WEEKS_NUM), np.nan))
         for score in sentiment_scores:
+            if not score['score']: continue
             score_date = datetime.strptime(score["date"], "%Y-%m-%d")
             week_year, week_num, day_of_week = score_date.isocalendar()
-            heatmap_data[week_year][day_of_week - 1, week_num - 1] = score["score"]
+            index = (day_of_week - 1, week_num - 1)
+
+            current_score = heatmap_data[week_year][index]
+            heatmap_data[week_year][index] = np.nanmean([current_score, score['score']])
 
         # Iterate over each year to create separate plots
         for year, yearly_data in sorted(heatmap_data.items()):
