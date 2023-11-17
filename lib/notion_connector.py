@@ -47,7 +47,7 @@ class NotionConnector:
     def process_entry(self, row):
         entry_data = {
             "date": row["properties"]["Date Combined"]["formula"]["string"],
-            "text": ""
+            "text": "",
         }
         self.get_block_content(row["id"], entry_data)
         return entry_data

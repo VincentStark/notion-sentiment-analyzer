@@ -57,9 +57,10 @@ class SentimentAnalyzer:
                 {
                     "role": "user",
                     "content": f"""
-                        What's the author's happiness score of the text? 
-                        Put it to 'score' field that as a float value from -1.0 (very unhappy) to 1.0 (very happy). 
-                        If you can't assess score, still add 'score' field but make it an empty string. 
+                        What's the author's happiness score of the text?
+                        Put it to 'score' field that as a float value from -1.0 (very unhappy) to 1.0 (very happy).
+                        If you can't assess score, still add 'score' field but make it an empty string.
+                        Don't ever put anything in the 'score' field but a single float number.
                         Text: {text}
                     """,
                 },
