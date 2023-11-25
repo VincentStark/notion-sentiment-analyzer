@@ -49,23 +49,24 @@ class NotionConnector:
             "date": row["properties"]["Date Combined"]["formula"]["string"],
             "text": "",
         }
-        self.get_block_content(row["id"], entry_data)
+        self.get_block_content(row["id"], row["last_edited_time"], entry_data)
         return entry_data
 
-    def get_block_content(self, block_id, entry_data):
-        blocks = self.redis_client.get(block_id)
+    def get_block_content(self, block_id, last_edited_time, entry_data):
+        cache_key = f"${block_id}-${last_edited_time}"
+        blocks = self.redis_client.get(cache_key)
         if blocks:
             blocks = json.loads(blocks)
         else:
             blocks = self.client.blocks.children.list(block_id=block_id).get(
                 "results", []
             )
-            self.redis_client.set(block_id, json.dumps(blocks))
+            self.redis_client.set(cache_key, json.dumps(blocks))
 
         for block in blocks:
             entry_data["text"] += self.extract_text_from_block(block)
             if block["has_children"]:
-                self.get_block_content(block["id"], entry_data)
+                self.get_block_content(block["id"], last_edited_time, entry_data)
 
     def extract_text_from_block(self, block):
         block_type = block["type"]
