@@ -8,10 +8,18 @@ from tqdm import tqdm
 
 load_dotenv()
 
+
 def main():
     # Set up command line argument parsing
-    parser = argparse.ArgumentParser(description="Analyze sentiment from Notion entries")
-    parser.add_argument("-m", "--model", default="nltk", help="Specify the analyzer type (default: nltk)")
+    parser = argparse.ArgumentParser(
+        description="Analyze sentiment from Notion entries"
+    )
+    parser.add_argument(
+        "-m",
+        "--model",
+        default="nltk",
+        help="Specify the analyzer type (default: nltk)",
+    )
     args = parser.parse_args()
 
     # Create an instance of NotionConnector

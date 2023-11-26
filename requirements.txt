@@ -6,3 +6,8 @@ openai
 python-dotenv
 redis
 tqdm
+
+invoke
+black
+flake8
+codespell
