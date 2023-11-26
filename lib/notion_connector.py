@@ -27,7 +27,7 @@ class NotionConnector:
         page_count = 0
 
         while True:
-            self.logger.info(f"Processing page {page_count + 1}...")
+            self.logger.info(f"Retrieving page {page_count + 1}...")
 
             response = self.client.databases.query(
                 database_id=self.database_id,
@@ -38,14 +38,14 @@ class NotionConnector:
             for row in rows:
                 entries.append(self.process_entry(row))
 
-            self.logger.debug(f"Processed page {page_count + 1}")
+            self.logger.debug(f"Retrieved page {page_count + 1}")
             page_count += 1
 
             if not response.get("next_cursor"):
                 break
             start_cursor = response["next_cursor"]
 
-        self.logger.info("All pages processed.")
+        self.logger.info("All pages retrieved.")
 
         return entries
 

@@ -31,9 +31,15 @@ pip install -r requirements.txt
 
 - If you're using "gpt4" analyzer type, add `OPENAI_API_KEY` to .`env` file.
 
-## Usage
+## Usage (Docker Compose)
 
-To run the project:
+By default, Docker runs the analyzer with NLTK model. To change that, update `docker-compose.yml` file.
+
+```bash
+docker-compose up
+```
+
+## Usage (local)
 
 ```bash
 python analyzer.py
@@ -42,6 +48,10 @@ python analyzer.py
 ```bash
 python analyzer.py -m gpt4
 ```
+
+## Result
+
+The resulting heatmap is in `output/` folder.
 
 ![heatmap](heatmap.png)
 

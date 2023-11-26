@@ -8,9 +8,22 @@ services:
       - NOTION_TOKEN=${NOTION_TOKEN}
       - NOTION_DATABASE_ID=${NOTION_DATABASE_ID}
       - NOTION_DATE_FIELD=${NOTION_DATE_FIELD}
+      - LOG_LEVEL=${LOG_LEVEL}
       - REDIS_HOST=redis
-  
+    # Uncomment to run with GPT4
+    # command: python analyzer.py -m gpt4
+    volumes:
+      - ./output:/app/output
+    depends_on:
+      redis:
+        condition: service_started
+
   redis:
     image: "redis:alpine"
     ports:
       - "6379:6379"
+    volumes:
+      - redis_data:/data
+
+volumes:
+  redis_data:

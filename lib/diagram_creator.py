@@ -79,8 +79,5 @@ class DiagramCreator:
                 bottom=0.19,
             )
 
-            # Set the title for each year's plot
             ax.set_title(f"Sentiment Heatmap for {year}")
-
-            # Show the plot
-            plt.show()
+            plt.savefig(f"output/sentiment_heatmap_{year}.png")

@@ -5,10 +5,14 @@ import redis
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
 from openai import OpenAI
 import os
+import logging
 
 
 class SentimentAnalyzer:
     def __init__(self, analyzer_type="nltk"):
+        self.logger = logging.getLogger(__name__)
+        logging.basicConfig(level=os.getenv("LOG_LEVEL", "INFO"))
+
         redis_host = os.getenv("REDIS_HOST", "localhost")
         redis_port = os.getenv("REDIS_PORT", 6379)
         redis_password = os.getenv("REDIS_PASSWORD", None)
@@ -23,10 +27,12 @@ class SentimentAnalyzer:
             self.initialize_gpt4_analyzer()
 
     def initialize_nltk_analyzer(self):
+        self.logger.info("Initializing NLTK...")
         nltk.download("vader_lexicon")
         self.analyzer = SentimentIntensityAnalyzer()
 
     def initialize_gpt4_analyzer(self):
+        self.logger.info("Initializing GPT-4...")
         self.analyzer = OpenAI()
 
     def analyze(self, text):
@@ -57,11 +63,12 @@ class SentimentAnalyzer:
                 {
                     "role": "user",
                     "content": f"""
-                        What's the author's happiness score of the text?
-                        Put it to 'score' field that as a float value from -1.0 (very unhappy) to 1.0 (very happy).
+                        What's the author's happiness score of the text that will follow after "Input Text: "?
+                        Put this score to 'score' field as a float number from -1.0 (very unhappy) to 1.0 (very happy).
+                        Try your best to determine the score.
                         If you can't assess score, still add 'score' field but make it an empty string.
-                        Don't ever put anything in the 'score' field but a single float number.
-                        Text: {text}
+                        Don't ever put anything else in the 'score' field but a single float number or an empty string.
+                        Input Text: {text}
                     """,
                 },
             ],
