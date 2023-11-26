@@ -1,6 +1,6 @@
 # Notion Sentiment Analyzer
 
-This project connects to Notion using Notion API, retrieves entries from the Notion Database called “Reports”, performs sentiment analysis for each daily entry, and creates a diagram of sentiment over time, using “Date Combined” field as a time field.
+This project connects to Notion using Notion API, retrieves entries from the database defined in `.env`, performs sentiment (happiness) analysis for each entry, and creates a diagram of sentiment over time, using `NOTION_DATE_FIELD` field.
 
 ## Installation
 
